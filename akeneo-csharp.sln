@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akeneo", "src\Akeneo\Akeneo.csproj", "{79E0C9CD-12F4-4FE0-9D5D-C656FBC59BC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akeneo", "src\Akeneo\Akeneo.csproj", "{79E0C9CD-12F4-4FE0-9D5D-C656FBC59BC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akeneo.IntegrationTests", "tests\Akeneo.IntegrationTests\Akeneo.IntegrationTests.csproj", "{46F841AA-D7D5-447B-A0AB-DB968AFA8B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akeneo.IntegrationTests", "tests\Akeneo.IntegrationTests\Akeneo.IntegrationTests.csproj", "{46F841AA-D7D5-447B-A0AB-DB968AFA8B3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akeneo.Tests", "tests\Akeneo.Tests\Akeneo.Tests.csproj", "{7E5820FD-4AAD-4CDD-B78C-0735A01535E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akeneo.Tests", "tests\Akeneo.Tests\Akeneo.Tests.csproj", "{7E5820FD-4AAD-4CDD-B78C-0735A01535E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {178B6AEF-A453-4D3A-82BB-5480CF35DE8B}
 	EndGlobalSection
 EndGlobal
