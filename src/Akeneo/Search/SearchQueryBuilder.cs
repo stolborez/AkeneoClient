@@ -10,18 +10,20 @@ namespace Akeneo.Search
 	public class SearchQueryBuilder
 	{
 		private const string SearchStart = "?search=";
-		private const string SearchLocale = "&search_locale=";
-		private const string SearchScope = "&search_scope=";
+		private const string SearchLocale = "&locale=";
+		private const string SearchScope = "&scope=";
+		private const string SearchPage = "&page=";
 
 		public string GetQueryString(IEnumerable<Criteria> criterias)
 		{
 			var searchDictionary = GetSearchDictionary(criterias);
 			var channel = GetChannels(criterias);
 			var locale = GetLocales(criterias);
-			return GetQueryString(searchDictionary, channel, locale);
+			var page = GetPage(criterias);
+			return GetQueryString(searchDictionary, channel, locale, page);
 		}
 
-		public string GetQueryString(Dictionary<string, List<Criteria>> criterias, string scope = null, string locale = null)
+		public string GetQueryString(Dictionary<string, List<Criteria>> criterias, string scope = null, string locale = null,string page = null)
 		{
 			if (!criterias?.Keys.Any() ?? true)
 			{
@@ -42,6 +44,12 @@ namespace Akeneo.Search
 				builder.Append(SearchLocale);
 				builder.Append(locale);
 			}
+
+            if (!string.IsNullOrEmpty(page))
+            {
+                builder.Append(SearchPage);
+                builder.Append(page);
+            }
 
 			return builder.ToString();
 		}
@@ -94,5 +102,11 @@ namespace Akeneo.Search
 				.OfType<LocaleCriteria>()
 				.FirstOrDefault()?.Value as string;
 		}
+        public string GetPage(IEnumerable<Criteria> criterias)
+        {
+            return criterias
+                .OfType<PageCriteria>()
+                .FirstOrDefault()?.Value as string;
+        }
 	}
 }
