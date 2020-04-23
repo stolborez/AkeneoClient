@@ -15,6 +15,7 @@ namespace Akeneo.Common
 		private static readonly Type Product = typeof(Product);
 		private static readonly Type MediaFile = typeof(MediaFile);
 		private static readonly Type Locale = typeof(Locale);
+		private static readonly Type ReferenceEntityRecord = typeof(ReferenceEntityRecord);
 
 		private readonly ConcurrentDictionary<Type, string> _typeToEndpointCache;
 
@@ -25,42 +26,39 @@ namespace Akeneo.Common
 
 		public string ForResourceType<TModel>(string parentCode = null) where TModel : ModelBase
 		{
-			var isOption = AttributeOption.GetTypeInfo().IsAssignableFrom(typeof(TModel));
-			return isOption
-				? $"{Endpoints.Attributes}/{parentCode}/options"
-				: GetResourceEndpoint(typeof(TModel));
+            if (AttributeOption.GetTypeInfo().IsAssignableFrom(typeof(TModel)))
+            {
+                return $"{Endpoints.Attributes}/{parentCode}/options";
+
+            }
+            if (ReferenceEntityRecord.GetTypeInfo().IsAssignableFrom(typeof(TModel)))
+            {
+                return $"{Endpoints.ReferenceEntityRecords}/{parentCode}/records";
+            }
+			return GetResourceEndpoint(typeof(TModel));
 		}
 
 		public string ForResource<TModel>(TModel existing) where TModel : ModelBase
 		{
 			var baseUri = GetResourceEndpoint(typeof(TModel));
-			var product = existing as Product;
-			if (product != null)
-			{
-				return $"{baseUri}/{product.Identifier}";
+            switch (existing)
+            {
+                case Product item:
+                    return $"{baseUri}/{item.Identifier}";
+                case AttributeBase item:
+                    return $"{baseUri}/{item.Code}";
+                case AttributeOption item:
+                    return $"{baseUri}/{item.Code}";
+                case Category item:
+					return $"{baseUri}/{item.Code}";
+                case Family item:
+					return $"{baseUri}/{item.Code}";
+                case ReferenceEntityRecord item:
+                    return $"{baseUri}/{item.Code}/records";
+                default:
+                    return null;
 			}
-			var attribute = existing as AttributeBase;
-			if (attribute != null)
-			{
-				return $"{baseUri}/{attribute.Code}";
-			}
-			var option = existing as AttributeOption;
-			if (option != null)
-			{
-				return $"{baseUri}/{option.Attribute}/option/{option.Code}";
-			}
-			var family = existing as Family;
-			if (family != null)
-			{
-				return $"{baseUri}/{family.Code}";
-			}
-			var category= existing as Category;
-			if (category != null)
-			{
-				return $"{baseUri}/{category.Code}";
-			}
-			return null;
-		}
+        }
 
 		public string ForResource<TModel>(params string[] code) where TModel : ModelBase
 		{
@@ -116,6 +114,10 @@ namespace Akeneo.Common
 				{
 					return Endpoints.Locale;
 				}
+                if (ReferenceEntityRecord.GetTypeInfo().IsAssignableFrom(type))
+                {
+                    return Endpoints.ReferenceEntityRecords;
+                }
 				throw new NotSupportedException($"Unable to find API endpoint for type {modelType.FullName}");
 			});
 		}
